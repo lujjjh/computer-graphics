@@ -1,0 +1,17 @@
+{
+  "name": "computer-graphics",
+  "version": "0.0.0",
+  "description": "Homework of computer graphics.",
+  "main": "electron.js",
+  "dependencies": {
+    "element-ui": "^1.0.0-rc.3",
+    "node-sass": "^3.10.0",
+    "sass-loader": "^4.0.2",
+    "vue": "next",
+    "vue-electron": "^1.0.0",
+    "vue-resource": "^0.7.0",
+    "vue-router": "next"
+  },
+  "devDependencies": {},
+  "author": "lujjjh <lujjjh@gmail.com>"
+}
