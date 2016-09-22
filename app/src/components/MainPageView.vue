@@ -2,6 +2,7 @@
   <div>
     <toolbar class="toolbar"
       :supported-shapes="supportedShapes"
+      @command="handleCommand"
       @select-algorithm="handleSelectAlgorithm"></toolbar>
     <pixel-canvas class="canvas"
       ref="canvas"
@@ -28,7 +29,7 @@
         supportedShapes,
         pixelSize: 24,
         pixels: [],
-        stokeColor: '#2c3e50',
+        stokeColor: '#2980b9',
         fillColor: '#fff',
         selectedShape: null,
         selectedAlgorithm: null,
@@ -68,10 +69,23 @@
           .map((col, y) => [...Array(rows)].map((row, x) => col[x] || Pixel()));
       },
 
+      handleCommand(command) {
+        switch (command) {
+          case 'clear': return this.clear();
+          default: console.warn('No such command: ' + command);
+        }
+      },
+
       handleSelectAlgorithm(shape, algorithm) {
         this.clearSelection();
         this.selectedShape = shape;
         this.selectedAlgorithm = algorithm;
+      },
+
+      clear() {
+        this.pixels = [];
+        this.selectedPixels = [];
+        this.handleResize();
       },
 
       clearSelection() {
@@ -127,7 +141,7 @@
     display: flex;
     flex-flow: column;
     height: 100%;
-    background: #eee;
+    background: #2c3e50;
 
     >  .canvas {
       margin: 40px;
