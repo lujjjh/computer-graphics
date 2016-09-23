@@ -2,8 +2,17 @@
   <div>
     <toolbar class="toolbar"
       :supported-shapes="supportedShapes"
-      @command="handleCommand"
-      @select-algorithm="handleSelectAlgorithm"></toolbar>
+      @select-algorithm="handleSelectAlgorithm">
+      <el-select v-model="stokeColor">
+        <el-option
+          v-for="color in stokeColors"
+          :value="color"
+          :style="{ background: color }">
+          <span><!-- empty --></span>
+        </el-option>
+      </el-select>
+      <el-button type="text" @click.native="clear">清除画布</el-button>
+    </toolbar>
     <pixel-canvas class="canvas"
       ref="canvas"
       :pixel-size="pixelSize"
@@ -33,7 +42,11 @@
         fillColor: '#fff',
         selectedShape: null,
         selectedAlgorithm: null,
-        selectedPixels: []
+        selectedPixels: [],
+
+        stokeColors: [
+          '#1abc9c'
+        ]
       };
     },
 
@@ -69,13 +82,6 @@
           .map((col, y) => [...Array(rows)].map((row, x) => col[x] || Pixel()));
       },
 
-      handleCommand(command) {
-        switch (command) {
-          case 'clear': return this.clear();
-          default: console.warn('No such command: ' + command);
-        }
-      },
-
       handleSelectAlgorithm(shape, algorithm) {
         this.clearSelection();
         this.selectedShape = shape;
@@ -89,10 +95,13 @@
       },
 
       clearSelection() {
-        this.selectedPixels.forEach(({ x, y }) => {
-          this.pixels[x][y].selected = false;
-        });
+        let { selectedPixels } = this;
         this.selectedPixels = [];
+        setTimeout(() => {
+          selectedPixels.forEach(({ x, y }) => {
+            this.pixels[x][y].selected = false;
+          });
+        }, 300);
       },
 
       handleClickPixel({ x, y }) {
