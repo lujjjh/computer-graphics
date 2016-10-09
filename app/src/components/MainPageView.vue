@@ -3,14 +3,8 @@
     <toolbar class="toolbar"
       :supported-shapes="supportedShapes"
       @select-algorithm="handleSelectAlgorithm">
-      <el-select v-model="stokeColor">
-        <el-option
-          v-for="color in stokeColors"
-          :value="color"
-          :style="{ background: color }">
-          <span><!-- empty --></span>
-        </el-option>
-      </el-select>
+      <el-button type="text" @click.native="zoomOut">➖</el-button>
+      <el-button type="text" @click.native="zoomIn">➕</el-button>
       <el-button type="text" @click.native="clear">清除画布</el-button>
     </toolbar>
     <pixel-canvas class="canvas"
@@ -42,11 +36,7 @@
         fillColor: '#fff',
         selectedShape: null,
         selectedAlgorithm: null,
-        selectedPixels: [],
-
-        stokeColors: [
-          '#1abc9c'
-        ]
+        selectedPixels: []
       };
     },
 
@@ -94,6 +84,20 @@
         this.handleResize();
       },
 
+      zoomOut() {
+        if (this.pixelSize > 6) {
+          this.pixelSize >>= 1;
+          this.handleResize();
+        }
+      },
+
+      zoomIn() {
+        if (this.pixelSize < 96) {
+          this.pixelSize <<= 1;
+          this.handleResize();
+        }
+      },
+
       clearSelection() {
         let { selectedPixels } = this;
         this.selectedPixels = [];
@@ -119,10 +123,12 @@
           let { outline, fills } = this.selectedAlgorithm.callback({ selectedPixels });
           this.clearSelection();
           outline.forEach(({ x, y }) => {
+            if (x < 0 || y < 0 || x >= this.pixels.length || y >= this.pixels[0].length) return;
             this.pixels[x][y].painted = true;
             this.pixels[x][y].brushColor = this.stokeColor;
           });
           fills.forEach(({ x, y }) => {
+            if (x < 0 || y < 0 || x >= this.pixels.length || y >= this.pixels[0].length) return;
             this.pixels[x][y].painted = true;
             this.pixels[x][y].brushColor = this.brushColor;
           });
