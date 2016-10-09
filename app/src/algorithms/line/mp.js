@@ -23,6 +23,7 @@ export default ({ selectedPixels }) => {
   let dy = end.y - start.y;
   if (dx < dy) {
     [start.x, start.y, end.x, end.y] = [start.y, start.x, end.y, end.x];
+    [dx, dy] = [dy, dx];
     mapPoint.add(({ x, y }) => ({ x: y, y: x }));
   }
 
@@ -38,7 +39,7 @@ export default ({ selectedPixels }) => {
   do {
     outline.push(mapPoint.map({ x, y }));
     x++;
-    if (d >= 0) {
+    if (d > 0) {
       d += delta1;
     } else {
       y++;
