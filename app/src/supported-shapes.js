@@ -31,10 +31,10 @@ export default [
       { name: '扫描线', callback: polygonScan }
     ],
     checkIfFinished(points) {
-      if (points.length < 3) return false;
-      let first = points[0];
-      let last = points[points.length - 1];
-      return first.x === last.x && first.y === last.y;
+      const { length } = points;
+      if (length < 4) return false;
+      return points[length - 2].x === points[length - 1].x &&
+        points[length - 2].y === points[length - 1].y;
     }
   }
 ];

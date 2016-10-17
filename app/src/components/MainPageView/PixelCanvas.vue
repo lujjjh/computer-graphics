@@ -48,6 +48,7 @@
     > .container {
       display: inline-block;
       box-shadow: 0 0 15px 5px rgba(0, 0, 0, .2);
+      transform:scaleY(-1);
     }
   }
 

@@ -13,11 +13,17 @@ module.exports = ({ selectedPixels }) => {
   let initialY = Infinity;
 
   // 1. set up ET
-  for (let i = 0, j = 1, len = selectedPixels.length; j < len; i++, j++) {
+  let startPixel = selectedPixels[0];
+  for (let i = 0, j = 1, len = selectedPixels.length - 1; j < len; i++, j++) {
     let pixels = [
       selectedPixels[i],
       selectedPixels[j]
     ];
+    if (selectedPixels[j].x === startPixel.x && selectedPixels[j].y === startPixel.y) {
+      i++;
+      j++;
+      startPixel = selectedPixels[j];
+    }
     pixels.sort(({ y: y1 }, { y: y2 }) => y1 - y2);
     let [ymin, ymax] = [pixels[0].y, pixels[1].y];
     // skip horizontal line
