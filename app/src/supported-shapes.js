@@ -2,11 +2,8 @@ import lineDDA from './algorithms/line/dda';
 import lineMP from './algorithms/line/mp';
 import lineBresenham from './algorithms/line/bresenham';
 import circleMP from './algorithms/circle/mp';
-// <<<<<<< 2cad1b87257fe92bfe3d933ad17df94411c43c80
 import polygonScan from './algorithms/polygon/scan';
-// =======
 import cohen from './algorithms/cuts/cohen';
- // >>>>>>> test
 
 export default [
   {
@@ -30,7 +27,6 @@ export default [
     }
   },
   {
-// <<<<<<< 2cad1b87257fe92bfe3d933ad17df94411c43c80
     name: '多边形',
     algorithms: [
       { name: '扫描线', callback: polygonScan }
@@ -42,15 +38,13 @@ export default [
         points[length - 2].y === points[length - 1].y;
     }
   },
-// =======
   {
     name: '裁剪',
     algorithms: [
-      { name: 'cohen', callback: cohen }
+      { name: 'Cohen', callback: cohen }
     ],
     checkIfFinished(points) {
       return points.length === 4;
-// >>>>>>> test
     }
   }
 ];
