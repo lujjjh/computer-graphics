@@ -11,19 +11,19 @@ const RB = 6;
 
 // dda({ })
 
+// ************** 给直线的端点编码 ***************
 function Encode(pt, left, right) {
   let ptx = 0; // ptx是返回的端点编码
 
-  // ************** 给直线的端点编码 ***************
   if (pt.x < left.x) {
     ptx = ptx | L;
   } else if (pt.x > right.x) {
     ptx = ptx | R;
   }
 
-  if (pt.y < right.y) {
+  if (pt.y > right.y) {
     ptx = ptx | B;
-  } else if (pt.y > left.y) {
+  } else if (pt.y < left.y) {
     ptx = ptx | T;
   }
   return ptx;
@@ -41,13 +41,21 @@ export default ({ selectedPixels }) => {
   let [line1, line2, left, right] = selectedPixels;
   // line1是直线的第一个端点，line2是直线的第二个端点
   // left是矩形框的左上角端点，right是矩形框的右下角端点
-  let outline = [];
-  let fills = [];
+
+  line1 = { ...line1 };
+  line2 = { ...line2 };
+  left = { ...left };
+  right = { ...right };
+  [left.x, left.y, right.x, right.y] = [
+    Math.min(left.x, right.x),
+    Math.min(left.y, right.y),
+    Math.max(left.x, right.x),
+    Math.max(left.y, right.y)
+  ];
 
   let lineptx1 = 0;
   let lineptx2 = 0;
   lineptx1 = Encode(line1, left, right);
-  debugger;
   lineptx2 = Encode(line2, left, right);
   // lineptx1和2是直线两个端点的编码
 
@@ -67,48 +75,166 @@ export default ({ selectedPixels }) => {
   topside.x = line2.x + ((line1.x - line2.x) / (line1.y - line2.y) * (left.y - line2.y));
   bottomside.y = right.y;
   bottomside.x = line2.x + ((line1.x - line2.x) / (line1.y - line2.y) * (right.y - line2.y));
-  leftside = Math.round(leftside);
-  rightside = Math.round(rightside);
-  topside = Math.round(topside);
-  bottomside = Math.round(bottomside);
+  leftside.x = Math.round(leftside.x);
+  leftside.y = Math.round(leftside.y);
+  rightside.x = Math.round(rightside.x);
+  rightside.y = Math.round(rightside.y);
+  topside.x = Math.round(topside.x);
+  topside.y = Math.round(topside.y);
+  bottomside.x = Math.round(bottomside.x);
+  bottomside.y = Math.round(bottomside.y);
   // ***计算直线与各边的交点***
 
-// if(lineptx1 & lineptx2){ 不画 }
-
-switch(lineptx1){
-  case T:{
-    line1.y = left.y;
-    line1.x = topside.x;
-    break;
+  if (lineptx1 & lineptx2) {
+    return { outline: [], fills: [] };
   }
-  case L:{
-    line1.x = left.x;
-    line1.y = leftside.y;
-    break;
-  }
-  case B:{
-    line1.y = right.y;
-    line1.x = bottomside.x;
-    break;
-  }
-  case R:{
-    line1.x = right.x;
-    line1.y = rightside.y;
-    break;
-  }
-  case LT:{
-    
-  }
-}
-
-  if (lineptx1 | lineptx2 === 0) {
+  if (lineptx1 === 0 && lineptx2 === 0) {
     return dda({ selectedPixels: [line1, line2] });
-  } else if (lineptx1 & lineptx2 !== 0) {
-    return { outline, fills };
   }
 
-  // if (lineptx1 & lineptx2 != 0) {
+// *********** 判断起点的选择 ***********
+  switch (lineptx1) {
+    case T: {
+      line1.y = left.y;
+      line1.x = topside.x;
+      break;
+    }
+    case L: {
+      line1.x = left.x;
+      line1.y = leftside.y;
+      break;
+    }
+    case B: {
+      line1.y = right.y;
+      line1.x = bottomside.x;
+      break;
+    }
+    case R: {
+      line1.x = right.x;
+      line1.y = rightside.y;
+      break;
+    }
+    case LT: {
+      if (topside.x >= left.x && topside.x <= right.x) {
+        line1.x = topside.x;
+        line1.y = left.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line1.y = leftside.y;
+        line1.x = left.x;
+        break;
+      } else break;
+    }
+    case RT: {
+      if (topside.x >= left.x && topside.x <= right.x) {
+        line1.x = topside.x;
+        line1.y = left.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line1.y = leftside.y;
+        line1.x = right.x;
+        break;
+      } else break;
+    }
+    case RB: {
+      if (leftside.y >= left.y && leftside.y <= right.y) {
+        line1.y = leftside.y;
+        line1.x = right.x;
+        break;
+      } else if (bottomside.x >= left.x && bottomside.x <= right.x) {
+        line1.x = bottomside.x;
+        line1.y = right.y;
+        break;
+      } else break;
+    }
+    case LB: {
+      if (bottomside.x >= left.x && bottomside.x <= right.x) {
+        line1.x = bottomside.x;
+        line1.y = right.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line1.y = leftside.y;
+        line1.x = left.x;
+        break;
+      } else break;
+    }
+  }
+// ************ end of 判断起点的选择 ***********
 
+// *********** 判断终点的选择 ***********
+  switch (lineptx2) {
+    case T: {
+      line2.y = left.y;
+      line2.x = topside.x;
+      break;
+    }
+    case L: {
+      line2.x = left.x;
+      line2.y = leftside.y;
+      break;
+    }
+    case B: {
+      line2.y = right.y;
+      line2.x = bottomside.x;
+      break;
+    }
+    case R: {
+      line2.x = right.x;
+      line2.y = rightside.y;
+      break;
+    }
+    case LT: {
+      if (topside.x >= left.x && topside.x <= right.x) {
+        line2.x = topside.x;
+        line2.y = left.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line2.y = leftside.y;
+        line2.x = left.x;
+        break;
+      } else break;
+    }
+    case RT: {
+      if (topside.x >= left.x && topside.x <= right.x) {
+        line2.x = topside.x;
+        line2.y = left.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line2.y = leftside.y;
+        line2.x = right.x;
+        break;
+      } else break;
+    }
+    case RB: {
+      if (leftside.y >= left.y && leftside.y <= right.y) {
+        line2.y = leftside.y;
+        line2.x = right.x;
+        break;
+      } else if (bottomside.x >= left.x && bottomside.x <= right.x) {
+        line2.x = bottomside.x;
+        line2.y = right.y;
+        break;
+      } else break;
+    }
+    case LB: {
+      if (bottomside.x >= left.x && bottomside.x <= right.x) {
+        line2.x = bottomside.x;
+        line2.y = right.y;
+        break;
+      } else if (leftside.y >= left.y && leftside.y <= right.y) {
+        line2.y = leftside.y;
+        line2.x = left.x;
+        break;
+      } else break;
+    }
+  }
+// *********** end of 判断终点的选择 ***********
+
+  return dda({ selectedPixels: [line1, line2] });
+
+  // if (lineptx1 | lineptx2 === 0) {
+  //   return dda({ selectedPixels: [line1, line2] });
   // }
+
   // return { outline,fills };
 };
