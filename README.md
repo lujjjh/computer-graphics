@@ -25,3 +25,8 @@
 ### Build Application for Production
 
     npm run build
+
+## Main Contributors
+
+- [lujjjh](https://github.com/lujjjh)
+- [HanMufu](https://github.com/HanMufu)
