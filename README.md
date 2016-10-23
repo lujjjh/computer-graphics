@@ -2,26 +2,26 @@
 
 > Homework of computer graphics.
 
-## Build Setup
+## Build from Source
 
-``` bash
-# install dependencies
-npm install
+### Requirements
 
-# serve with hot reload at localhost:9080
-npm run dev
+- Git
+- [Node.js](https://nodejs.org/en/) v6+
+- Visual Studio 2013 or Visual Studio 2015 Community (For Windows users)
 
-# build electron app for production
-npm run build
+### Clone
 
-# lint all JS/Vue component files in `app/src`
-npm run lint
+    git clone https://github.com/lujjjh/computer-graphics.git
 
-# run webpack in production
-npm run pack
-```
-More information can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/docs/npm_scripts.html).
+### Install Dependencies
 
----
+    npm install
 
-This project was generated from [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about this project can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+### Run Development Server
+
+    npm run dev
+
+### Build Application for Production
+
+    npm run build
