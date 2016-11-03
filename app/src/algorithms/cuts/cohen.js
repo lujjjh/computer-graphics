@@ -123,9 +123,7 @@ export default ({ selectedPixels }) => {
         line1.y = leftside.y;
         line1.x = left.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case RT: {
       if (topside.x >= left.x && topside.x <= right.x) {
@@ -136,22 +134,18 @@ export default ({ selectedPixels }) => {
         line1.y = leftside.y;
         line1.x = right.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case RB: {
-      if (leftside.y <= left.y && leftside.y >= right.y) {
-        line1.y = leftside.y;
+      if (rightside.y <= right.y && rightside.y >= right.y) {
+        line1.y = rightside.y;
         line1.x = right.x;
         break;
       } else if (bottomside.x >= left.x && bottomside.x <= right.x) {
         line1.x = bottomside.x;
         line1.y = right.y;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case LB: {
       if (bottomside.x >= left.x && bottomside.x <= right.x) {
@@ -162,9 +156,7 @@ export default ({ selectedPixels }) => {
         line1.y = leftside.y;
         line1.x = left.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
   }
 // ************ end of 判断起点的选择 ***********
@@ -200,9 +192,7 @@ export default ({ selectedPixels }) => {
         line2.y = leftside.y;
         line2.x = left.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case RT: {
       if (topside.x >= left.x && topside.x <= right.x) {
@@ -213,22 +203,18 @@ export default ({ selectedPixels }) => {
         line2.y = leftside.y;
         line2.x = right.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case RB: {
-      if (leftside.y <= left.y && leftside.y >= right.y) {
-        line2.y = leftside.y;
+      if (rightside.y <= right.y && rightside.y >= right.y) {
+        line2.y = rightside.y;
         line2.x = right.x;
         break;
       } else if (bottomside.x >= left.x && bottomside.x <= right.x) {
         line2.x = bottomside.x;
         line2.y = right.y;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
     case LB: {
       if (bottomside.x >= left.x && bottomside.x <= right.x) {
@@ -239,9 +225,7 @@ export default ({ selectedPixels }) => {
         line2.y = leftside.y;
         line2.x = left.x;
         break;
-      } else {
-        return { outline: [], fills: [] };
-      }
+      } else break;
     }
   }
 // *********** end of 判断终点的选择 ***********

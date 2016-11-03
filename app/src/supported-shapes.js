@@ -5,6 +5,9 @@ import circleMP from './algorithms/circle/mp';
 import polygonScan from './algorithms/polygon/scan';
 import cohen from './algorithms/cuts/cohen';
 import sutherland from './algorithms/polygon/clip';
+import rectangle from './algorithms/rectangle/rectangle';
+import bezier from './algorithms/bezier/de';
+import bernstein from './algorithms/bezier/bernstein';
 
 export default [
   {
@@ -13,6 +16,15 @@ export default [
       { name: 'DDA', callback: lineDDA },
       { name: '中点法', callback: lineMP },
       { name: 'Bresenham', callback: lineBresenham }
+    ],
+    checkIfFinished(points) {
+      return points.length === 2;
+    }
+  },
+  {
+    name: '矩形',
+    algorithms: [
+      { name: '矩形边框', callback: rectangle }
     ],
     checkIfFinished(points) {
       return points.length === 2;
@@ -28,9 +40,9 @@ export default [
     }
   },
   {
-    name: '多边形',
+    name: '填充',
     algorithms: [
-      { name: '扫描线', callback: polygonScan }
+      { name: '多边形', callback: polygonScan }
     ],
     checkIfFinished(points) {
       const { length } = points;
@@ -61,6 +73,16 @@ export default [
         if (points[i].x === start.x && points[i].y === start.y) break;
       }
       return i + 2 === length - 1;
+    }
+  },
+  {
+    name: '曲线',
+    algorithms: [
+      { name: 'bezier', callback: bezier },
+      { name: 'bernstein', callback: bernstein }
+    ],
+    checkIfFinished(points) {
+      return points.length === 4;
     }
   }
 ];
