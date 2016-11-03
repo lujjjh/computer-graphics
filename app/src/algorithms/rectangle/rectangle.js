@@ -14,9 +14,4 @@ export default ({ selectedPixels }) => {
   outline.push.apply(outline, dda({ selectedPixels: [point3, point4] }).outline);
   outline.push.apply(outline, dda({ selectedPixels: [point4, point1] }).outline);
   return { outline, fills: [] };
-  // dda({ selectedPixels: [point2, point3] });
-  // dda({ selectedPixels: [point3, point4] });
-  // dda({ selectedPixels: [point4, point1] });
-  // return { outline: [], fills: [] };
-  // return dda({ selectedPixels: [point1, point3] });
 };
