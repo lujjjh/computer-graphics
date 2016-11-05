@@ -8,6 +8,8 @@ import sutherland from './algorithms/polygon/clip';
 import rectangle from './algorithms/rectangle/rectangle';
 import bezier from './algorithms/bezier/de';
 import bernstein from './algorithms/bezier/bernstein';
+import translation from './algorithms/transformation/translation';
+import rotate from './algorithms/transformation/rotate';
 
 export default [
   {
@@ -83,6 +85,24 @@ export default [
     ],
     checkIfFinished(points) {
       return points.length === 4;
+    }
+  },
+  {
+    name: '曲线平移',
+    algorithms: [
+      { name: 'translation', callback: translation }
+    ],
+    checkIfFinished(points) {
+      return points.length === 6;
+    }
+  },
+  {
+    name: '曲线旋转',
+    algorithms: [
+      { name: 'rotate', callback: rotate }
+    ],
+    checkIfFinished(points) {
+      return points.length === 7;
     }
   }
 ];
