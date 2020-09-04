@@ -5,7 +5,7 @@
   "main": "electron.js",
   "dependencies": {
     "element-ui": "^1.0.0-rc.3",
-    "node-sass": "^3.10.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^4.0.2",
     "vue": "next",
     "vue-electron": "^1.0.0",
